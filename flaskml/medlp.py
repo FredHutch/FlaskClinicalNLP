@@ -1,9 +1,8 @@
+import json
 import logging
 
 from flask import Blueprint, render_template, request, session, abort, jsonify, Response, current_app, g
 from flaskml import medlpInterface
-from amazonserviceinterface.MedLPServiceInterface import MedLPServiceInterface
-import ClinicalNotesProcessor.JSONParser as JSONParser
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
@@ -21,13 +20,13 @@ def update_existing_model(model_id):
 
 
 @bp.route("/annotate/", methods=['POST'])
-def annotate(type="all"):
+def annotate(**kwargs):
     if not request.json or not 'extract_text' in request.json:
         abort(400)
 
     note_text = request.json['extract_text']
     if note_text:
-        return _get_entities(note_text, type)
+        return _get_entities(note_text, **kwargs)
     else:
         msg = "No Entity Text was found"
         logger.info("No entities returned")
@@ -36,8 +35,27 @@ def annotate(type="all"):
 
 @bp.route("/annotate/phi", methods=['POST'])
 def annotate_phi():
-    return annotate(type=["PERSONAL_IDENTIFIABLE_INFORMATION"])
+    return annotate(entityTypes=["PERSONAL_IDENTIFIABLE_INFORMATION"])
 
+
+@bp.route("/annotate/medication", methods=['POST'])
+def annotate_medication():
+    return annotate(entityTypes=["MEDICATION"])
+
+
+@bp.route("/annotate/condition", methods=['POST'])
+def annotate_condition():
+    return annotate(entityTypes=["MEDICAL_CONDITION"])
+
+
+@bp.route("/annotate/ttp", methods=['POST'])
+def annotate_ttp():
+    return annotate(entityTypes=["TEST_TREATMENT_PROCEDURE"])
+
+
+@bp.route("/annotate/anatomy", methods=['POST'])
+def annotate_anatomy():
+    return annotate(entityTypes=["ANATOMY"])
 
 
 @bp.route("/members/<string:name>/")
@@ -45,14 +63,16 @@ def getMember(name):
     return name
 
 
-def _get_entities(note_text, entityTypes):
+def _get_entities(note_text, **kwargs):
+
     try:
-        entities = medlpInterface.get_entities(note_text, entityTypes=entityTypes)
+        entities = medlpInterface.get_entities(note_text, **kwargs)
     except ValueError as e:
-        msg = "An error occured while calling MedLP"
-        logger.warning("An error occured while calling MedLPInterface: {}".format(e))
+        msg = "An error occurred while calling MedLP"
+        logger.warning("An error occurred while calling MedLPInterface: {}".format(e))
         return Response(msg, status=400)
 
-    logger.info("{} entities returned for entity types: {}".format(len(entities), entityTypes))
-    return Response(entities, mimetype=u'application/json')
+    logger.info("{} entities returned for entity types".format(len(entities)))
+    return Response(json.dumps(entities), mimetype=u'application/json')
+
 

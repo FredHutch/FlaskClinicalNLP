@@ -45,13 +45,16 @@ setup(
                       'boto3',
                       'hdc_preprocessing',
                       'amazonserviceinterface'],
-    dependency_links = ["https://whiteau:{}@github.com/FredHutch/hdc-preprocessing/tarball/master#egg=hdc_preprocessing"
+    testing_requires=['unittest',
+                      'mock'],
+    dependency_links = ["https://{}@github.com/FredHutch/hdc-preprocessing/tarball/master#egg=hdc_preprocessing"
                             .format(get_env_variable('HDCGITAUTHTOKEN')),
-                        "https://whiteau:{}@github.comgithub.com/FredHutch/HDCMedLPInterface/tarball/master#egg=amazonserviceinterface"
+                        "https://{}@github.com/FredHutch/HDCMedLPInterface/tarball/master#egg=amazonserviceinterface"
                             .format(get_env_variable('HDCGITAUTHTOKEN'))
                         ],
     license='',
     author='whiteau',
     author_email='whiteau@fhcrc.org',
-    description='Proof of concept for running ML behind a flask app'
+    description='Proof of concept for running ML behind a flask app',
+    zip_safe=False
 )

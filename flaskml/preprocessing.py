@@ -32,8 +32,8 @@ def _get_preprocessed_text(note_text, types):
         processed_text = preprocessInterface.sentences(processed_text)
         processed_text = preprocessInterface.dependency_parse(processed_text)
     except ValueError as e:
-        msg = "An error occured while calling MedLP"
-        logger.warning("An error occured while calling MedLPInterface: {}".format(e))
+        msg = "An error occurred while attempting to preprocess the text"
+        logger.warning("An error occurred while attempting to preprocess the text: {}".format(e))
         return Response(msg, status=400)
 
     logger.info("preprocessing complete for text with options: {}".format(types))
