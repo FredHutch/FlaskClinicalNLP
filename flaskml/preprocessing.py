@@ -1,3 +1,4 @@
+import json
 import logging
 
 from flask import Blueprint, render_template, request, session, abort, jsonify, Response, current_app, g
@@ -24,18 +25,18 @@ def preprocess(type="all"):
 
 
 def _get_preprocessed_text(note_text, types):
-    processed_text = ""
+    processed_text = {}
 
     try:
-        processed_text = preprocessInterface.tokenize(note_text)
-        processed_text = preprocessInterface.tag(processed_text)
-        processed_text = preprocessInterface.sentences(processed_text)
-        processed_text = preprocessInterface.dependency_parse(processed_text)
+        processed_text['tokens'] = preprocessInterface.tokenize(note_text)
+        processed_text['tags'] = preprocessInterface.tag(note_text)
+        processed_text['sentences'] = preprocessInterface.sentences(note_text)
+        processed_text['dependencies'] = preprocessInterface.dependency_parse(note_text)
     except ValueError as e:
         msg = "An error occurred while attempting to preprocess the text"
         logger.warning("An error occurred while attempting to preprocess the text: {}".format(e))
         return Response(msg, status=400)
 
     logger.info("preprocessing complete for text with options: {}".format(types))
-    return Response(processed_text, mimetype=u'application/json')
+    return Response(json.dumps(processed_text), mimetype=u'application/json')
 

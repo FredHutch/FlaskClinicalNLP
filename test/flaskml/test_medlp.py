@@ -3,11 +3,11 @@ import unittest
 import json
 
 from flask import g, session, Response
-from flaskml import create_app, medlp
+from flaskml import create_app
 from unittest.mock import patch
 import flaskml.medlp as medlp
 
-class FlaskBookshelfTests(unittest.TestCase):
+class MedLPEndpointTests(unittest.TestCase):
 
     def setUp(self):
         # creates a test client
@@ -63,7 +63,6 @@ class FlaskBookshelfTests(unittest.TestCase):
         mockMedLPInterface.assert_called_with(self.INPUT_TEXT, entityTypes="all")
 
 
-
     @patch('flaskml.medlpInterface.get_entities')
     def test_annotate_no_specified_types(self, mockMedLPInterface):
         entity_response_json = [{'fox': 'PHI'}, {'dog': 'PHI'}]
@@ -71,7 +70,6 @@ class FlaskBookshelfTests(unittest.TestCase):
 
         result = self.make_json_post_to_endpoint('/medlp/annotate/',
                                                  dict(extract_text=self.INPUT_TEXT))
-
 
         mockMedLPInterface.assert_called_with(self.INPUT_TEXT)
 
