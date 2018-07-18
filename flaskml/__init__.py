@@ -16,7 +16,7 @@ logger.setLevel(logging.INFO)
 
 # load medlp interface
 from amazonserviceinterface.MedLPServiceInterface import MedLPServiceInterface
-import ClinicalNotesProcessor.JSONParser as JSONParser
+import clinicalnotesprocessor.JSONParser as JSONParser
 medlpInterface = MedLPServiceInterface(JSONParser.xform_dict_to_json)
 
 def index():
