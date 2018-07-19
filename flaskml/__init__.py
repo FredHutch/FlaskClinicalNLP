@@ -28,7 +28,7 @@ def create_app(test_config=None):
     # create and configure the flaskml
     app = Flask(__name__, instance_relative_config=True)
     app.config.from_mapping(
-        SECRET_KEY='dev',
+        SECRET_KEY=os.urandom(24),
         DATABASE=os.path.join(app.instance_path, 'flaskml.sqlite'),
     )
 
@@ -38,11 +38,15 @@ def create_app(test_config=None):
         #app.config.from_object('config.default')
 
         # Load the configuration from the instance folder
-        app.config.from_pyfile('config.py')
+        '''
+        TODO: the is an unexpected interaction between venv, setup.py install, and where instance folders get located in venv
+        until this is figured out, the app will rely on a environment var to find the config 
+        '''
+        #app.config.from_pyfile('config.py')
 
         # Load the file specified by the APP_CONFIG_FILE environment variable
         # Variables defined here will override those in the default configuration
-        #app.config.from_envvar('APP_CONFIG_FILE')
+        app.config.from_envvar('APP_CONFIG_FILE', silent=True)
 
     else:
         # load the test config if passed in
@@ -59,7 +63,7 @@ def create_app(test_config=None):
     db.init_app(app)
 
 
-    from flaskml import medlp, models, preprocessing
+    from flaskml import medlp, preprocessing
     app.register_blueprint(medlp.bp)
     app.register_blueprint(preprocessing.bp)
 
