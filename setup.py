@@ -41,12 +41,12 @@ setup(
     version='0.1',
     packages=['flaskml', 'test', 'test.flaskml',],
     url='https://github.com/WhiteAu/FlaskML',
-    install_requires=['hdc_preprocessing',
+    install_requires=['blob_preprocess',
                       'amazonserviceinterface',
                       'flask',
                       'boto3',
                       ],
-    dependency_links = ["https://{}@github.com/FredHutch/hdc-preprocessing/tarball/master#egg=hdc_preprocessing"
+    dependency_links = ["https://{}@github.com/FredHutch/hdc-preprocessing/tarball/master#egg=blob_preprocess"
                             .format(get_env_variable('HDCGITAUTHTOKEN')),
                         "https://{}@github.com/FredHutch/HDCMedLPInterface/tarball/master#egg=amazonserviceinterface"
                             .format(get_env_variable('HDCGITAUTHTOKEN'))
