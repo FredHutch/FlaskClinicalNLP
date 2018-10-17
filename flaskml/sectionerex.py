@@ -11,7 +11,7 @@ bp = Blueprint('sectionerex', __name__, url_prefix='/sectionerex')
 
 
 @bp.route("/", methods=['POST'])
-@bp.route("/<sectioning_category>", methods=['POST'])
+@bp.route("/<string:sectioning_category>", methods=['POST'])
 def section(sectioning_category=None):
     if not request.json or 'extract_text' not in request.json:
         msg = "No extract text was specified for sectioning."
@@ -34,12 +34,12 @@ def get_rules():
 
 def _get_sectioned_text(note_text, category=None):
     section_rules = get_rules()
-    if category is not None and category.lower() not in section_rules.keys():
-        msg = "A category was specified that is not in the sectioners ruleset: {}\nCurrently allowed rules are: {}".format(category, section_rules.keys())
+    if category and category.lower() not in section_rules.keys():
+        msg = "A category was specified that is not in the sectioner's ruleset: {}\nCurrently allowed categories are: {}".format(category, section_rules.keys())
         return Response(msg, status=400)
 
     logger.info("specified category: {}".format(category))
-    logger.info("sectioner rules in use: {}".format(section_rules))
+    logger.info("sectioner categories in use: {}".format(section_rules))
     tags = sectionerex.label_text(note_text, section_rules, category=category)
 
     return Response(json.dumps(tags), mimetype=u'application/json')
