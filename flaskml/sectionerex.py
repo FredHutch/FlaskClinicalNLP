@@ -28,7 +28,7 @@ def section(sectioning_category=None):
 def get_rules():
     if 'sectioner_rules' not in g:
         logger.info("rules loading from: {}".format(current_app.config['SECTIONER_MODEL_LOC']))
-        g.sectioner_rules = sectionerex.load_rules(dirpath=current_app.config['SECTIONER_MODEL_LOC'])
+        g.sectioner_rules = sectionerex.load_rules(current_app.config['SECTIONER_MODEL_LOC'])
 
     return g.sectioner_rules
 
