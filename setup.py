@@ -41,15 +41,18 @@ setup(
     version='0.1',
     packages=['flaskml', 'test', 'test.flaskml',],
     url='https://github.com/WhiteAu/FlaskML',
-    install_requires=['hdc_preprocessing',
+    install_requires=['ClinicalPreprocessing',
                       'amazonserviceinterface',
+                      "sectionerex",
                       'flask',
                       'boto3',
                       ],
-    dependency_links = ["https://{}@github.com/FredHutch/hdc-preprocessing/tarball/master#egg=hdc_preprocessing"
+    dependency_links = ["https://github.com/FredHutch/hdc-preprocessing/tarball/master#egg=ClinicalPreprocessing"
                             .format(get_env_variable('HDCGITAUTHTOKEN')),
                         "https://{}@github.com/FredHutch/HDCMedLPInterface/tarball/master#egg=amazonserviceinterface"
-                            .format(get_env_variable('HDCGITAUTHTOKEN'))
+                            .format(get_env_variable('HDCGITAUTHTOKEN')),
+                        "https://{}@github.com/FredHutch/SectionerEx/tarball/master#egg=sectionerex"
+                            .format(get_env_variable('HDCGITAUTHTOKEN')),
                         ],
     license='',
     author='whiteau',

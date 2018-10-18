@@ -63,9 +63,10 @@ def create_app(test_config=None):
     db.init_app(app)
 
 
-    from flaskml import medlp, preprocessing
+    from flaskml import medlp, preprocessing, sectionerex
     app.register_blueprint(medlp.bp)
     app.register_blueprint(preprocessing.bp)
+    app.register_blueprint(sectionerex.bp)
 
     # make url_for('index') == url_for('blog.index')
     # in another flaskml, you might define a separate main index here with
