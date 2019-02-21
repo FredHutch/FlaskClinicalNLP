@@ -35,7 +35,7 @@ def annotate(**kwargs):
 
 @bp.route("/annotate/phi", methods=['POST'])
 def annotate_phi():
-    return annotate(entityTypes=["PERSONAL_IDENTIFIABLE_INFORMATION"])
+    return annotate(entityTypes=["PROTECTED_HEALTH_INFORMATION"])
 
 
 @bp.route("/annotate/medication", methods=['POST'])
@@ -66,7 +66,10 @@ def getMember(name):
 def _get_entities(note_text, **kwargs):
 
     try:
-        entities = medlpInterface.get_entities(note_text, **kwargs)
+        if 'entityTypes' in kwargs and kwargs['entityTypes'] == ["PROTECTED_HEALTH_INFORMATION"]:
+            entities = medlpInterface.get_phi(note_text)
+        else:
+            entities = medlpInterface.get_entities(note_text, **kwargs)
     except ValueError as e:
         msg = "An error occurred while calling MedLP"
         logger.warning("An error occurred while calling MedLPInterface: {}".format(e))
