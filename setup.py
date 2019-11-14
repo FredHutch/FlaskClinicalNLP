@@ -47,7 +47,7 @@ setup(
                       'flask',
                       'boto3',
                       ],
-    dependency_links = ["https://github.com/FredHutch/hdc-preprocessing/tarball/master#egg=ClinicalPreprocessing"
+    dependency_links = ["https://{}@github.com/FredHutch/hdc-preprocessing/tarball/master#egg=ClinicalPreprocessing"
                             .format(get_env_variable('HDCGITAUTHTOKEN')),
                         "https://{}@github.com/FredHutch/HDCMedLPInterface/tarball/master#egg=amazonserviceinterface"
                             .format(get_env_variable('HDCGITAUTHTOKEN')),
