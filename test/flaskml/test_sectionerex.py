@@ -1,4 +1,3 @@
-import flaskml
 import unittest
 import json
 import os
@@ -14,7 +13,7 @@ class SectionerexEndpointTests(unittest.TestCase):
 
     def setUp(self):
         # creates a test client
-        self.TEST_RESOURCE_PATH = os.path.join(os.path.split(__file__)[0], "test_resources")
+        self.TEST_RESOURCE_PATH = os.path.join(os.path.split('__file__')[0], "test_resources")
         test_config = {'SECRET_KEY':'dev',
                        'TESTING':True,
                        'SECTIONER_MODEL_LOC': self.TEST_RESOURCE_PATH
@@ -48,8 +47,6 @@ class SectionerexEndpointTests(unittest.TestCase):
 
 
     def load_test_rules(self):
-        # Test labeling with standard rules
-        custom_rpath = os.path.join(os.path.split(__file__)[0], "test_resources")
 
         rules = sectionerex.load_rules(self.TEST_RESOURCE_PATH)
 
@@ -85,7 +82,7 @@ class SectionerexEndpointTests(unittest.TestCase):
         result = self.make_json_post_to_endpoint('/sectionerex/other',
                                                  {"extract_text": "Header\n Allergies: None "})
 
-        mockSectionerExLoadRules.assert_called_with(dirpath=self.TEST_RESOURCE_PATH)
+        mockSectionerExLoadRules.assert_called_with(self.TEST_RESOURCE_PATH)
         # assert the status code of the response
         self.assertEqual(result.status_code, 200)
         self.assertEqual(result.json, [{'end': 8, 'section': 'Header', 'start': 7, 'text': ' '}, {'end': 17, 'section': 'Allergies', 'start': 8, 'text': 'Allergies'}])
@@ -97,7 +94,7 @@ class SectionerexEndpointTests(unittest.TestCase):
         result = self.make_json_post_to_endpoint('/sectionerex/',
                                                  {"extract_text": "Header\n Allergies: None "})
 
-        mockSectionerExLoadRules.assert_called_with(dirpath=self.TEST_RESOURCE_PATH)
+        mockSectionerExLoadRules.assert_called_with(self.TEST_RESOURCE_PATH)
         # assert the status code of the response
         self.assertEqual(result.status_code, 200)
         self.assertEqual(result.json, [{'end': 8, 'section': 'Header', 'text': ' ', 'start': 7}])
@@ -109,7 +106,7 @@ class SectionerexEndpointTests(unittest.TestCase):
         result = self.make_json_post_to_endpoint('/sectionerex/allaboutcats',
                                                  {"extract_text": "Header\n Allergies: None "})
 
-        mockSectionerExLoadRules.assert_called_with(dirpath=self.TEST_RESOURCE_PATH)
+        mockSectionerExLoadRules.assert_called_with(self.TEST_RESOURCE_PATH)
         self.assertEqual(result.status_code, 400)
 
 

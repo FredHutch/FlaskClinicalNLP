@@ -4,10 +4,10 @@ import sectionerex
 
 from flask import Blueprint, render_template, request, session, abort, jsonify, Response, current_app, g
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger('__name__')
 logger.setLevel(logging.INFO)
 
-bp = Blueprint('sectionerex', __name__, url_prefix='/sectionerex')
+bp = Blueprint('sectionerex', '__name__', url_prefix='/sectionerex')
 
 
 @bp.route("/", methods=['POST'])
