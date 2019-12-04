@@ -4,10 +4,10 @@ import sectionerex
 
 from flask import Blueprint, render_template, request, session, abort, jsonify, Response, current_app, g
 
-logger = logging.getLogger('__name__')
+logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
-bp = Blueprint('sectionerex', '__name__', url_prefix='/sectionerex')
+bp = Blueprint('sectionerex', __name__, url_prefix='/sectionerex')
 
 
 @bp.route("/", methods=['POST'])
@@ -34,7 +34,7 @@ def get_rules():
 
 def _get_sectioned_text(note_text, category=None):
     section_rules = get_rules()
-    if category and category.lower() not in section_rules.keys():
+    if category and category.upper() not in section_rules.keys():
         msg = "A category was specified that is not in the sectioner's ruleset: {}\nCurrently allowed categories are: {}".format(category, section_rules.keys())
         return Response(msg, status=400)
 

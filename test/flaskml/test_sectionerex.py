@@ -13,7 +13,7 @@ class SectionerexEndpointTests(unittest.TestCase):
 
     def setUp(self):
         # creates a test client
-        self.TEST_RESOURCE_PATH = os.path.join(os.path.split('__file__')[0], "test_resources")
+        self.TEST_RESOURCE_PATH = os.path.join(os.path.split(__file__)[0], "test_resources")
         test_config = {'SECRET_KEY':'dev',
                        'TESTING':True,
                        'SECTIONER_MODEL_LOC': self.TEST_RESOURCE_PATH
@@ -24,12 +24,10 @@ class SectionerexEndpointTests(unittest.TestCase):
         self.app.testing = True
 
         self.INPUT_TEXT = "the quick brown fox jumped over the lazy dog"
-        self.DEFAULT_RULES_DICT = {'default':
-                                       [('Header', re.compile('^ H*', re.IGNORECASE|re.MULTILINE)),
-                                        ],
-                                   'other':
-                                   [('Allergies', re.compile('Allergies', re.IGNORECASE|re.MULTILINE)),
-                                    ]
+        self.DEFAULT_RULES_DICT = {'DEFAULT':
+                                       {'Header': re.compile('^ H*', re.IGNORECASE|re.MULTILINE)},
+                                   'OTHER':
+                                       {'Allergies': re.compile('Allergies', re.IGNORECASE|re.MULTILINE)}
                                    }
 
 
