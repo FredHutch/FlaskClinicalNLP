@@ -34,7 +34,7 @@ def get_rules():
 
 def _get_sectioned_text(note_text, category=None):
     section_rules = get_rules()
-    if category and category.lower() not in section_rules.keys():
+    if category and category.upper() not in section_rules.keys():
         msg = "A category was specified that is not in the sectioner's ruleset: {}\nCurrently allowed categories are: {}".format(category, section_rules.keys())
         return Response(msg, status=400)
 
