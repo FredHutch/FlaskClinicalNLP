@@ -35,7 +35,7 @@ class CompMedEndpointTests(unittest.TestCase):
     def test_annotate_no_entity_text(self):
         # sends HTTP GET request to the application
         # on the specified path
-        result = self.app.post('/annotate/')
+        result = self.app.post('/')
 
         # assert the status code of the response
         self.assertEqual(result.status_code, 400)
@@ -44,7 +44,7 @@ class CompMedEndpointTests(unittest.TestCase):
     def test_annotate_empty_entity_text(self):
         # sends HTTP GET request to the application
         # on the specified path
-        result = self.make_json_post_to_endpoint('/annotate/',
+        result = self.make_json_post_to_endpoint('/',
                                                  dict())
 
         # assert the status code of the response
@@ -64,7 +64,7 @@ class CompMedEndpointTests(unittest.TestCase):
     def test_annotate_no_specified_types(self, mockCompMed):
         entity_response_json = [{'fox': 'PHI'}, {'dog': 'PHI'}]
         mockCompMed.return_value = entity_response_json
-        result = self.make_json_post_to_endpoint('/compmed/annotate/',
+        result = self.make_json_post_to_endpoint('/compmed/',
                                                  dict(extract_text=self.INPUT_TEXT))
         mockCompMed.assert_called_with(self.INPUT_TEXT)
 

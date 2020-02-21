@@ -9,17 +9,7 @@ logger.setLevel(logging.INFO)
 
 bp = Blueprint('compmed', __name__, url_prefix='/compmed')
 
-@bp.route("/train")
-def train_new_model():
-    return "Stub for training a new model!"
-
-
-@bp.route("/train/<int:model_id>")
-def update_existing_model(model_id):
-    return "Stub for online training an existing model!"
-
-
-@bp.route("/annotate/", methods=['POST'])
+@bp.route("/", methods=['POST'])
 def annotate(**kwargs):
     if not request.json or not 'extract_text' in request.json:
         abort(400)
@@ -33,27 +23,27 @@ def annotate(**kwargs):
         return Response(msg, status=400)
 
 
-@bp.route("/annotate/phi", methods=['POST'])
+@bp.route("/phi", methods=['POST'])
 def annotate_phi():
     return annotate(entityTypes=["PROTECTED_HEALTH_INFORMATION"])
 
 
-@bp.route("/annotate/medication", methods=['POST'])
+@bp.route("/medication", methods=['POST'])
 def annotate_medication():
     return annotate(entityTypes=["MEDICATION"])
 
 
-@bp.route("/annotate/condition", methods=['POST'])
+@bp.route("/condition", methods=['POST'])
 def annotate_condition():
     return annotate(entityTypes=["MEDICAL_CONDITION"])
 
 
-@bp.route("/annotate/ttp", methods=['POST'])
+@bp.route("/ttp", methods=['POST'])
 def annotate_ttp():
     return annotate(entityTypes=["TEST_TREATMENT_PROCEDURE"])
 
 
-@bp.route("/annotate/anatomy", methods=['POST'])
+@bp.route("/anatomy", methods=['POST'])
 def annotate_anatomy():
     return annotate(entityTypes=["ANATOMY"])
 
@@ -77,5 +67,3 @@ def _get_entities(note_text, **kwargs):
 
     logger.info("{} entities returned for entity types".format(len(entities)))
     return Response(json.dumps(entities), mimetype=u'application/json')
-
-
