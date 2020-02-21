@@ -15,9 +15,9 @@ logger.setLevel(logging.INFO)
 
 
 # load medlp interface
-from amazonserviceinterface.MedLPServiceInterface import MedLPServiceInterface
-import clinicalnotesprocessor.JSONParser as JSONParser
-medlpInterface = MedLPServiceInterface(JSONParser.xform_dict_to_json)
+from compmed.CompMedServiceInterface import CompMedServiceInterface
+import utils.json__parser_util as JSONParser
+compMedInterface = CompMedServiceInterface(JSONParser.xform_dict_to_json)
 
 def index():
     return render_template(
@@ -29,11 +29,11 @@ def create_app(test_config=None):
     app = Flask(__name__, instance_relative_config=True)
     app.config.from_mapping(
         SECRET_KEY=os.urandom(24),
-        DATABASE=os.path.join(app.instance_path, 'flaskml.sqlite'),
+        DATABASE=os.path.join(app.instance_path, 'flaskclinicalnlp.sqlite'),
     )
 
     if test_config is None:
-        # Now we can access the configuration variables via flaskml.config["VAR_NAME"].
+        # Now we can access the configuration variables via flaskclinicalnlp.config["VAR_NAME"].
         # Load the default configuration
         #app.config.from_object('config.default')
 
@@ -63,16 +63,17 @@ def create_app(test_config=None):
     db.init_app(app)
 
 
-    from flaskml import medlp, preprocessing, sectionerex
-    app.register_blueprint(medlp.bp)
-    app.register_blueprint(preprocessing.bp)
+    from flaskclinicalnlp import compmed, sectionerex, spacy
+    app.register_blueprint(compmed.bp)
+    app.register_blueprint(spacy.bp)
     app.register_blueprint(sectionerex.bp)
 
     # make url_for('index') == url_for('blog.index')
-    # in another flaskml, you might define a separate main index here with
-    # flaskml.route, while giving the blog blueprint a url_prefix, but for
+    # in another flaskclinicalnlp, you might define a separate main index here with
+    # flaskclinicalnlp.route, while giving the blog blueprint a url_prefix, but for
     # the tutorial the blog will be the main index
     app.add_url_rule('/', view_func=index)
+    app.url_map.strict_slashes = False
 
     return app
 

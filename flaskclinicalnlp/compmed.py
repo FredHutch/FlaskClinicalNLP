@@ -2,24 +2,14 @@ import json
 import logging
 
 from flask import Blueprint, render_template, request, session, abort, jsonify, Response, current_app, g
-from flaskml import medlpInterface
+from flaskclinicalnlp import compmed
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
-bp = Blueprint('medlp', __name__, url_prefix='/medlp')
+bp = Blueprint('compmed', __name__, url_prefix='/compmed')
 
-@bp.route("/train")
-def train_new_model():
-    return "Stub for training a new model!"
-
-
-@bp.route("/train/<int:model_id>")
-def update_existing_model(model_id):
-    return "Stub for online training an existing model!"
-
-
-@bp.route("/annotate/", methods=['POST'])
+@bp.route("/", methods=['POST'])
 def annotate(**kwargs):
     if not request.json or not 'extract_text' in request.json:
         abort(400)
@@ -33,27 +23,27 @@ def annotate(**kwargs):
         return Response(msg, status=400)
 
 
-@bp.route("/annotate/phi", methods=['POST'])
+@bp.route("/phi", methods=['POST'])
 def annotate_phi():
     return annotate(entityTypes=["PROTECTED_HEALTH_INFORMATION"])
 
 
-@bp.route("/annotate/medication", methods=['POST'])
+@bp.route("/medication", methods=['POST'])
 def annotate_medication():
     return annotate(entityTypes=["MEDICATION"])
 
 
-@bp.route("/annotate/condition", methods=['POST'])
+@bp.route("/condition", methods=['POST'])
 def annotate_condition():
     return annotate(entityTypes=["MEDICAL_CONDITION"])
 
 
-@bp.route("/annotate/ttp", methods=['POST'])
+@bp.route("/ttp", methods=['POST'])
 def annotate_ttp():
     return annotate(entityTypes=["TEST_TREATMENT_PROCEDURE"])
 
 
-@bp.route("/annotate/anatomy", methods=['POST'])
+@bp.route("/anatomy", methods=['POST'])
 def annotate_anatomy():
     return annotate(entityTypes=["ANATOMY"])
 
@@ -67,15 +57,13 @@ def _get_entities(note_text, **kwargs):
 
     try:
         if 'entityTypes' in kwargs and kwargs['entityTypes'] == ["PROTECTED_HEALTH_INFORMATION"]:
-            entities = medlpInterface.get_phi(note_text)
+            entities = compmed.get_phi(note_text)
         else:
-            entities = medlpInterface.get_entities(note_text, **kwargs)
+            entities = compmed.get_entities(note_text, **kwargs)
     except ValueError as e:
-        msg = "An error occurred while calling MedLP"
-        logger.warning("An error occurred while calling MedLPInterface: {}".format(e))
+        msg = "An error occurred while calling Comprehend Medical"
+        logger.warning("An error occurred while calling Comprehend Medical Interface: {}".format(e))
         return Response(msg, status=400)
 
     logger.info("{} entities returned for entity types".format(len(entities)))
     return Response(json.dumps(entities), mimetype=u'application/json')
-
-

@@ -43,6 +43,3 @@ def _get_sectioned_text(note_text, category=None):
     tags = sectionerex.label_text(note_text, section_rules, category=category)
 
     return Response(json.dumps(tags), mimetype=u'application/json')
-
-
-
