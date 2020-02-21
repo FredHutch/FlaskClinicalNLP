@@ -9,4 +9,4 @@ cmd_arg_parser.add_argument('-e',  default='0.0.0.0',
                             help="Set endpoint. Default is 0.0.0.0 ")
 cmd_args = cmd_arg_parser.parse_args()
 
-app.run(host=cmd_args.endpoint)
+app.run(ssl_context='adhoc', host=cmd_args.endpoint)
