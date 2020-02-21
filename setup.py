@@ -37,7 +37,7 @@ def get_env_variable(var_name, default=False):
             raise EnvironmentError(error_msg.format(var=var_name, env_file=env_file))
 
 setup(
-    name='FlaskML',
+    name='FlaskClinicalNLP',
     version='0.1',
     packages=['flaskclinicalnlp', 'test', 'test.flaskclinicalnlp',],
     url='https://github.com/FredHutch/FlaskClinicalNLP',
@@ -45,11 +45,17 @@ setup(
                       'sectionerex',
                       'flask',
                       'boto3',
+                      'spacy>=2.2',
+                      'scispacy',
+                      'en_ner_bionlp13cg_md',
+                      'en_core_sci_md'
                       ],
     dependency_links = ["https://{}@github.com/FredHutch/ComprehendMedicalInterface/tarball/master#egg=compmed"
                             .format(get_env_variable('HDCGITAUTHTOKEN')),
                         "https://{}@github.com/FredHutch/SectionerEx/tarball/master#egg=sectionerex"
                             .format(get_env_variable('HDCGITAUTHTOKEN')),
+                        'https://s3-us-west-2.amazonaws.com/ai2-s2-scispacy/releases/v0.2.4/en_ner_bionlp13cg_md-0.2.4.tar.gz#egg=en_ner_bionlp13cg_md',
+                        'https://s3-us-west-2.amazonaws.com/ai2-s2-scispacy/releases/v0.2.4/en_core_sci_md-0.2.4.tar.gz#egg=en_core_sci_md',
                         ],
     license='',
     author='whiteau',

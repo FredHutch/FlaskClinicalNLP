@@ -63,8 +63,9 @@ def create_app(test_config=None):
     db.init_app(app)
 
 
-    from flaskml import compmed, sectionerex
-    app.register_blueprint(medlp.bp)
+    from flaskml import compmed, sectionerex, spacy
+    app.register_blueprint(compmed.bp)
+    app.register_blueprint(spacy.bp)
     app.register_blueprint(sectionerex.bp)
 
     # make url_for('index') == url_for('blog.index')
