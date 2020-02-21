@@ -2,7 +2,7 @@ import unittest
 import json
 
 from flask import g, session, Response
-from flaskml import create_app
+from flaskclinicalnlp import create_app
 from unittest.mock import patch
 import flaskclinicalnlp.compmed as compmed
 
