@@ -4,9 +4,9 @@ import json
 from flask import g, session, Response
 from flaskml import create_app
 from unittest.mock import patch
-import flaskml.medlp as medlp
+import flaskclinicalnlp.compmed as compmed
 
-class MedLPEndpointTests(unittest.TestCase):
+class CompMedEndpointTests(unittest.TestCase):
 
     def setUp(self):
         # creates a test client
@@ -35,7 +35,7 @@ class MedLPEndpointTests(unittest.TestCase):
     def test_annotate_no_entity_text(self):
         # sends HTTP GET request to the application
         # on the specified path
-        result = self.app.post('/medlp/annotate/')
+        result = self.app.post('/annotate/')
 
         # assert the status code of the response
         self.assertEqual(result.status_code, 400)
@@ -44,33 +44,29 @@ class MedLPEndpointTests(unittest.TestCase):
     def test_annotate_empty_entity_text(self):
         # sends HTTP GET request to the application
         # on the specified path
-        result = self.make_json_post_to_endpoint('/medlp/annotate/',
+        result = self.make_json_post_to_endpoint('/annotate/',
                                                  dict())
 
         # assert the status code of the response
         self.assertEqual(result.status_code, 400)
 
 
-    @patch('flaskml.medlpInterface.get_entities')
-    def test_get_entities_happy_case(self, mockMedLPInterface):
-
+    @patch('flaskclinicalnlp.compmed.get_entities')
+    def test_get_entities_happy_case(self, mockCompMed):
         entity_response_json = [{'fox': 'PHI'}, {'dog': 'PHI'}]
-        mockMedLPInterface.return_value = entity_response_json
+        mockCompMed.return_value = entity_response_json
         expected_result = Response(entity_response_json, mimetype=u'application/json')
-        result = medlp._get_entities(self.INPUT_TEXT, entityTypes="all")
+        result = compmed._get_entities(self.INPUT_TEXT, entityTypes="all")
+        mockCompMed.assert_called_with(self.INPUT_TEXT, entityTypes="all")
 
-        mockMedLPInterface.assert_called_with(self.INPUT_TEXT, entityTypes="all")
 
-
-    @patch('flaskml.medlpInterface.get_entities')
-    def test_annotate_no_specified_types(self, mockMedLPInterface):
+    @patch('flaskclinicalnlp.compmed.get_entities')
+    def test_annotate_no_specified_types(self, mockCompMed):
         entity_response_json = [{'fox': 'PHI'}, {'dog': 'PHI'}]
-        mockMedLPInterface.return_value = entity_response_json
-
-        result = self.make_json_post_to_endpoint('/medlp/annotate/',
+        mockCompMed.return_value = entity_response_json
+        result = self.make_json_post_to_endpoint('/compmed/annotate/',
                                                  dict(extract_text=self.INPUT_TEXT))
-
-        mockMedLPInterface.assert_called_with(self.INPUT_TEXT)
+        mockCompMed.assert_called_with(self.INPUT_TEXT)
 
 
 if __name__ == '__main__':

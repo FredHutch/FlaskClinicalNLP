@@ -2,12 +2,12 @@ import json
 import logging
 
 from flask import Blueprint, render_template, request, session, abort, jsonify, Response, current_app, g
-from flaskml import medlpInterface
+from flaskclinicalnlp import compmed
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
-bp = Blueprint('medlp', __name__, url_prefix='/medlp')
+bp = Blueprint('compmed', __name__, url_prefix='/compmed')
 
 @bp.route("/train")
 def train_new_model():
@@ -67,12 +67,12 @@ def _get_entities(note_text, **kwargs):
 
     try:
         if 'entityTypes' in kwargs and kwargs['entityTypes'] == ["PROTECTED_HEALTH_INFORMATION"]:
-            entities = medlpInterface.get_phi(note_text)
+            entities = compmed.get_phi(note_text)
         else:
-            entities = medlpInterface.get_entities(note_text, **kwargs)
+            entities = compmed.get_entities(note_text, **kwargs)
     except ValueError as e:
-        msg = "An error occurred while calling MedLP"
-        logger.warning("An error occurred while calling MedLPInterface: {}".format(e))
+        msg = "An error occurred while calling Comprehend Medical"
+        logger.warning("An error occurred while calling Comprehend Medical Interface: {}".format(e))
         return Response(msg, status=400)
 
     logger.info("{} entities returned for entity types".format(len(entities)))
