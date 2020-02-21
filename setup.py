@@ -39,24 +39,21 @@ def get_env_variable(var_name, default=False):
 setup(
     name='FlaskML',
     version='0.1',
-    packages=['flaskml', 'test', 'test.flaskml',],
-    url='https://github.com/WhiteAu/FlaskML',
-    install_requires=['ClinicalPreprocessing',
-                      'amazonserviceinterface',
-                      "sectionerex",
+    packages=['flaskclinicalnlp', 'test', 'test.flaskclinicalnlp',],
+    url='https://github.com/FredHutch/FlaskClinicalNLP',
+    install_requires=['compmed',
+                      'sectionerex',
                       'flask',
                       'boto3',
                       ],
-    dependency_links = ["https://{}@github.com/FredHutch/hdc-preprocessing/tarball/master#egg=ClinicalPreprocessing"
-                            .format(get_env_variable('HDCGITAUTHTOKEN')),
-                        "https://{}@github.com/FredHutch/HDCMedLPInterface/tarball/master#egg=amazonserviceinterface"
+    dependency_links = ["https://{}@github.com/FredHutch/ComprehendMedicalInterface/tarball/master#egg=compmed"
                             .format(get_env_variable('HDCGITAUTHTOKEN')),
                         "https://{}@github.com/FredHutch/SectionerEx/tarball/master#egg=sectionerex"
                             .format(get_env_variable('HDCGITAUTHTOKEN')),
                         ],
     license='',
     author='whiteau',
-    author_email='whiteau@fhcrc.org',
-    description='Proof of concept for running ML behind a flask app',
+    author_email='whiteau@fredhutch.org',
+    description='flask application for several general preprocessing clinical NLP steps (pos tagging, sectioning, NER, etc)',
     zip_safe=False
 )
