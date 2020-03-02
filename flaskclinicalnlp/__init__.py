@@ -16,7 +16,7 @@ logger.setLevel(logging.INFO)
 
 # load medlp interface
 from compmed.CompMedServiceInterface import CompMedServiceInterface
-import utils.json__parser_util as JSONParser
+from compmed_utils import json_parser_util as JSONParser
 compMedInterface = CompMedServiceInterface(JSONParser.xform_dict_to_json)
 
 def index():
