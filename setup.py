@@ -41,7 +41,7 @@ setup(
     version='0.1',
     packages=['flaskclinicalnlp', 'test', 'test.flaskclinicalnlp',],
     url='https://github.com/FredHutch/FlaskClinicalNLP',
-    install_requires=['compmed',
+    install_requires=['compmed-pkg',
                       'sectionerex',
                       'flask',
                       'boto3',
@@ -50,7 +50,7 @@ setup(
                       'en_ner_bionlp13cg_md',
                       'en_core_sci_md'
                       ],
-    dependency_links = ["https://{}@github.com/FredHutch/ComprehendMedicalInterface/tarball/master#egg=compmed"
+    dependency_links = ["https://{}@github.com/FredHutch/ComprehendMedicalInterface/tarball/master#egg=compmed-pkg"
                             .format(get_env_variable('HDCGITAUTHTOKEN')),
                         "https://{}@github.com/FredHutch/SectionerEx/tarball/master#egg=sectionerex"
                             .format(get_env_variable('HDCGITAUTHTOKEN')),
