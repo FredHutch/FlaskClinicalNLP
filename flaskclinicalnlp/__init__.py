@@ -1,4 +1,4 @@
-# flaskml.py or flaskml/__init__.py
+# flaskclinicalnlp.py or flaskclinicalnlp/__init__.py
 import logging
 import os
 from flask import Flask, render_template
@@ -25,7 +25,7 @@ def index():
 
 
 def create_app(test_config=None):
-    # create and configure the flaskml
+    # create and configure the flaskclinicalnlp
     app = Flask(__name__, instance_relative_config=True)
     app.config.from_mapping(
         SECRET_KEY=os.urandom(24),
@@ -59,8 +59,8 @@ def create_app(test_config=None):
         pass
 
     #set up database
-    from . import db
-    db.init_app(app)
+    # from . import db
+    # db.init_app(app)
 
 
     from flaskclinicalnlp import compmed, sectionerex, spacy
