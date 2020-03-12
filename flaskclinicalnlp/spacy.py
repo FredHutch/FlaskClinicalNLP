@@ -1,5 +1,6 @@
 import json
 import logging
+import spacy
 
 from flask import Blueprint, render_template, request, session, abort, jsonify, Response, current_app, g
 
